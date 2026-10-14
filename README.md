@@ -72,14 +72,16 @@ Import this repository URL in the Cursor Marketplace. Each plugin ships a root `
 
 Kiro supports the Agent Plugins specification through [Kiro powers](https://kiro.dev/blog/powers-supports-plugins/), so Cairn installs as a power with no Kiro-specific packaging.
 
-Install each plugin from a local clone of this repository:
+Clone this repository locally, then install each plugin in the Kiro IDE or the Kiro CLI. Either way, installed powers land in `~/.kiro/powers/installed/` and are tracked in `~/.kiro/powers/installed.json`, and each plugin's skills are then invocable as slash commands (`/assess-readiness`, `/generate-roadmap`, `/assess-verification`, `/design-strategy`, `/detect-ai-smells`).
+
+*Kiro IDE:* open the **Powers** panel, choose **Add custom power** → **Import power from a folder**, and select `plugins/codebase-ai-readiness`. Repeat for `plugins/software-verification`. The IDE accepts any folder with a root `plugin.json`.
+
+*Kiro CLI:*
 
 ```bash
 kiro-cli powers install ./plugins/codebase-ai-readiness
 kiro-cli powers install ./plugins/software-verification
 ```
-
-Installed powers land in `~/.kiro/powers/installed/` and are tracked in `~/.kiro/powers/installed.json`. Each plugin's skills are then invocable as slash commands (`/assess-readiness`, `/generate-roadmap`, `/assess-verification`, `/design-strategy`, `/detect-ai-smells`).
 
 > On the Kiro CLI, if the slash commands do not appear in a chat session after install, add the installed powers to an agent's resources so their skills are discovered:
 >
@@ -91,6 +93,8 @@ Installed powers land in `~/.kiro/powers/installed/` and are tracked in `~/.kiro
 > ```
 >
 > Save as `~/.kiro/agents/cairn.json` and run `kiro-cli chat --agent cairn`. As with Codex and Cursor, Claude-specific PostToolUse hooks do not run in Kiro; skills and references work the same.
+
+If you use both the IDE and the CLI, install Cairn from only one of them. They share `~/.kiro/powers/installed.json` but write it in different formats: the IDE requires `"version": "1.0.0"` and a `registryId` on each entry, and `kiro-cli powers install` omits both. A CLI install therefore makes the IDE's Powers panel fail with `Invalid installed.json schema`. To recover, add `"version": "1.0.0"` at the top level and `"registryId": "user-added"` to each entry.
 
 ### Usage
 
